@@ -1,3 +1,30 @@
+""" 
+Author: Ben Hogan
+
+Description: This sript allows the user to choose a directory from which to clean out 
+certain file types in batches. Answering n/no to any questions in the script 
+will terminate the script.
+
+1. Once the script has been run, it will prompt the user for a file path. 
+Paste/type the absolute file path of the directory from which to remove 
+files. 
+
+2. Then the user will be given a summary of the file types that are present in 
+that directory. 
+
+3. From there the user will be asked if they would like to remove 
+any file types from the directory. 
+
+4. Upon ansering y/yes, the user may type (without ".") the extention type 
+they wish to delete (directories not included). 
+
+3. Then the user will be prompted to confirm and upon answering y/yes those 
+file types will be deleted from the directory initially selected. 
+
+4. The user will then be asked if they would like to remove any other files, 
+upon which ansering y/yes would bring the user back to step 4.
+"""
+
 import os
 
 file_type_profiles = []
@@ -29,29 +56,29 @@ def main():
     # 4. Prompt for input on type to file delete, check input matches a type in the list of dicts
     if ensure_yes(input("\nDelete any of these file types? (y/n): ")):
         while True:
-            type_to_delete = input("Type the extension you'd like to delete (no '.' included): ")
+            type_to_delete = input("Type the extension the you'd like to delete (no '.' included): ")
             i = index_of(type_to_delete.lower())
             if i != None:
                 # Are you sure?
                 numOfFileType = file_type_profiles[i]['quantity']
                 fileType = file_type_profiles[i]['type'].upper()
 
-                if ensure_yes(input(f"""Are you sure you want to delete all {numOfFileType} {fileType} files? (y/n): """)):
+                if ensure_yes(input(f"""Are the user sure you want to delete all {numOfFileType} {fileType} files? (y/n): """)):
                     # Delete each filename in names list from directory
                     try:
                         for file in file_type_profiles[i]['names']: 
                             print(f'Removing --{file}--')
                             os.remove(os.path.join(path, file))
                     except:
-                        print("All of these types have either been deleted or moved")
+                        print("\nAll of these types have either been deleted or moved")
                         pass
-                    if not ensure_yes(input(f"Would you like to delete any other files? (y/n): ")): 
+                    if not ensure_yes(input(f"\nWould you like to delete any other files? (y/n): ")): 
                         break
                 else:
-                    if not ensure_yes(input(f"Would you like to delete any other files? (y/n): ")): 
+                    if not ensure_yes(input(f"\nWould you like to delete any other files? (y/n): ")): 
                         break
             else:
-                print(f"{type_to_delete.upper()} file(s) not present in the {path}\n")
+                print(f"\n{type_to_delete.upper()} file(s) not present in the {path}\n")
     else:
         print("No files were deleted")
 
